@@ -1,78 +1,50 @@
-import { createRouter, createWebHistory } from 'vue-router'
+import { createRouter, createWebHistory } from 'vue-router';
 
-// Default layout import
-import HomePage from '@/views/default-page/HomePage.vue'
+// Import Layout Components
+import PublicLayout from '@/layouts/PublicLayout.vue';
+import UserLayout from '@/layouts/UserLayout.vue';
+import AdminLayout from '@/layouts/AdminLayout.vue';
 
-
-// user imports
-import Login from '@/views/user/auth/Login.vue'
-import UserDashboard from '@/views/user/UserDashboard.vue'
-import UserProfile from '@/views/user/UserProfile.vue'
-
-// admin imports
-import AdminDashboard from '@/views/admin/AdminDashboard.vue'
-import ManageUsers from '@/views/admin/ManageUsers.vue'
+// Import public pages
+import HomePage from '@/views/publicPages/HomePage.vue';
+import UserDashboard from '@/views/user/UserDashboard.vue';
+import AdminDashboard from '@/views/admin/AdminDashboard.vue';
 
 const routes = [
-  // Default/public routes
+  // Public Routes with PublicLayout
   {
     path: '/',
-    name: 'Home',
-    component: HomePage
-  },
- 
-  {
-    path: '/login',
-    name: 'Login',
-    component: Login
+    component: PublicLayout,
+    children: [
+      { path: '', name: 'Home', component: HomePage },
+    
+    ]
   },
 
-  // User-specific routes (authenticated)
- 
+  // User Routes with UserLayout
   {
     path: '/user',
-    name: 'UserRoot',
-    redirect: { name: 'UserDashboard' },
-    meta: { requiresAuth: true },
+    component: UserLayout,
     children: [
-      {
-        path: 'dashboard',
-        name: 'UserDashboard',
-        component: UserDashboard
-      },
-      {
-        path: 'profile',
-        name: 'UserProfile',
-        component: UserProfile
-      }
+      { path: 'dashboard', name: 'UserDashboard', component: UserDashboard, meta: { requiresAuth: true } },
+      // ...other user routes
     ]
   },
 
-  // Admin-specific routes (authenticated & authorized)
-  
+  // Admin Routes with AdminLayout
   {
     path: '/admin',
-    name: 'AdminRoot',
-    redirect: { name: 'AdminDashboard' },
-    meta: { requiresAuth: true, requiresAdmin: true },
+    component: AdminLayout,
     children: [
-      {
-        path: 'dashboard',
-        name: 'AdminDashboard',
-        component: AdminDashboard
-      },
-      {
-        path: 'users',
-        name: 'ManageUsers',
-        component: ManageUsers
-      }
+      { path: 'dashboard', name: 'AdminDashboard', component: AdminDashboard, meta: { requiresAuth: true, requiresAdmin: true } },
+      // ...other admin routes
     ]
   }
-]
+];
 
 const router = createRouter({
   history: createWebHistory(),
   routes
-})
+});
 
-export default router
+export default router;
