@@ -1,5 +1,5 @@
 <template>
-  <section class="lg:h-screen lg:overflow-hidden relative bg-bone-white">
+  <section class="lg:h-screen lg:overflow-hidden relative py-16 bg-bone-white">
     <div class="lg:flex lg:h-full lg:min-h-screen container mx-auto">
       <div
         class="hidden lg:w-1/2 p-8 lg:p-12 lg:sticky lg:top-0 lg:h-screen lg:flex lg:flex-col lg:justify-center lg:items-center lg:text-center"
@@ -24,7 +24,7 @@
               href="#"
               class="bg-golden-brown text-bone-white py-3 px-8 rounded-full text-lg font-semibold hover:bg-opacity-90 transition-all duration-300 transform hover:scale-105"
             >
-              Book pickup
+              Schedule pickup
             </a>
             <a
               href="#"
@@ -36,7 +36,7 @@
         </div>
       </div>
 
-      <div class="lg:w-1/2 overflow-y-auto lg:pt-0 relative">
+      <div class="lg:w-1/2 overflow-y-auto lg:pt-0 relative custom-scrollbar">
         <div
           v-for="(tab, index) in tabs"
           :key="index"
@@ -142,7 +142,7 @@
                   href="#"
                   class="bg-golden-brown text-bone-white py-3 px-6 rounded-full text-base font-semibold text-center hover:bg-opacity-90 transition-all duration-300"
                 >
-                  Book pickup
+                  Schedule pickup
                 </a>
                 <a
                   href="#"
@@ -220,9 +220,9 @@
             <div v-if="index === 3">
               <div class="bg-white p-4 lg:p-6 rounded-lg shadow-md">
                 <h3 class="font-bold text-lg mb-4 text-charcoal">
-                  Dry Cleaning Pricing
+                  Dry Cleaning Standard 3-4 day turnaround for all orders.
                 </h3>
-                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div class="grid grid-cols-1  gap-4">
                   <div
                     v-for="(item, i) in tab.items"
                     :key="i"
@@ -245,9 +245,9 @@
               <div class="lg:hidden flex flex-col space-y-3 pt-6">
                 <a
                   href="#"
-                  class="bg-golden-brown text-bone-white py-3 px-6 rounded-full text-base font-semibold text-center hover:bg-opacity-90 transition-all duration-300"
+                  class="w-auto bg-golden-brown text-bone-white py-3 px-6 rounded-full text-base font-semibold text-center hover:bg-opacity-90 transition-all duration-300"
                 >
-                  Book pickup
+                  Schedule  pickup
                 </a>
                 <a
                   href="#"
@@ -293,7 +293,7 @@ const tabs = [
       {
         icon: faCalendarDays,
         title: "Schedule a pickup",
-        text: "You can schedule a pickup any day of the week. Your Valet will arrive with your free, personalized Rinse bags between 7pm and 10pm to pick up your clothes.",
+        text: "You can schedule a pickup any day of the week. Your Valet will arrive with your free, personalized Chuvi bags between 7pm and 10pm to pick up your clothes.",
       },
       {
         icon: faHandsWash,
@@ -319,7 +319,7 @@ const tabs = [
         text: "Our Wash & Fold service priced per pound. Standard 3-4 day turnaround. Next-Day Rush available.",
       },
       {
-        title: "Rinse Repeat",
+        title: "Chuvi Repeat",
         text: "Our all-inclusive Wash & Fold service, priced per bag, not per pound, with savings up to 52% compared with Pay-As-You-Go.",
       },
     ],
@@ -423,5 +423,8 @@ onBeforeUnmount(() => {
     font-size: 0.7rem;
     line-height: 1rem;
   }
+}
+.custom-scrollbar::-webkit-scrollbar {
+   display: none;
 }
 </style>

@@ -1,7 +1,7 @@
 <template>
   <header
-    :class="{ 'bg-navy-blue/95 shadow-md': scrolled }"
-    class="fixed top-0 left-0 w-full z-50 transition-all duration-500 ease-in-out py-4"
+    :class="{ 'bg-bone-white  ': scrolled }"
+    class="fixed top-0 left-0 w-full z-50 transition-all duration-500 ease-in-out py-4 bg-bone-white"
   >
     <div
       class="container mx-auto px-4 md:px-8 flex items-center justify-between relative"
@@ -9,11 +9,11 @@
       <!-- Mobile menu button -->
       <button
         @click="toggleMobileNav"
-        class="text-bone-white md:hidden absolute left-4 z-10"
+        class="text-charcoal md:hidden absolute left-4 z-10 cursor-pointer"
       >
         <font-awesome-icon
           :icon="isMobileNavOpen ? 'times' : 'bars'"
-          class="w-7 h-7 transition-all duration-300"
+          class="w-7 h-7 transition-all duration-300 text-2xl"
         />
       </button>
 
@@ -33,7 +33,7 @@
           v-for="link in navLinks"
           :key="link.name"
           :href="link.href"
-          class="text-bone-white hover:text-golden-brown transition-colors duration-300"
+          class="text-charcoal hover:text-golden-brown transition-colors duration-300"
         >
           {{ link.name }}
         </a>
@@ -56,13 +56,7 @@
           leave-from-class="opacity-100 scale-100 translate-x-0"
           leave-to-class="opacity-0 scale-95 translate-x-4"
         >
-          <a
-            v-if="scrolled"
-            href="/book-pickup"
-            class="bg-golden-brown text-bone-white py-2 px-5 rounded-full font-semibold transition-all duration-300 transform hover:scale-105"
-          >
-            Book pickup
-          </a>
+          <base-button v-if="scrolled" />
         </transition>
       </div>
     </div>
@@ -116,13 +110,7 @@
           Login
         </a>
 
-        <a
-          href="/book-pickup"
-          @click="closeMobileNav"
-          class="bg-golden-brown text-bone-white py-4 px-4 rounded-md font-semibold text-center hover:bg-pure-gold transition-colors duration-300"
-        >
-          Book pickup
-        </a>
+        <base-button border-radius="rounded-md" hover-color="pure-gold" />
       </div>
     </aside>
   </header>
@@ -130,17 +118,18 @@
 
 <script setup>
 import { ref, onMounted, onBeforeUnmount } from "vue";
+import BaseButton from "@/components/atoms/BaseButton.vue";
 
 const scrolled = ref(false);
 const isMobileNavOpen = ref(false);
 
 // Navigation links with icons
 const navLinks = [
-  { name: "Home", href: "#", icon: "home" },
-  { name: "Our services", href: "#", icon: "cogs" },
-  { name: "Pricing", href: "#", icon: "tags" },
-  { name: "How it works", href: "#", icon: "question-circle" },
-  { name: "About", href: "#", icon: "info-circle" },
+  { name: "Home", href: "/", icon: "home" },
+  { name: "Services & pricing", href: "/services", icon: "cogs" },
+  // { name: "Pricing", href: "/pricing", icon: "tags" },
+  // { name: "How it works", href: "/how-it-works", icon: "question-circle" },
+  { name: "About", href: "/about", icon: "info-circle" },
 ];
 
 const handleScroll = () => {

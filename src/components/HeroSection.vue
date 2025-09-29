@@ -27,23 +27,32 @@
     </div>
 
     <div class="hero-text-overlay">
-      <div
-        class="container mx-auto h-full flex items-center justify-center md:justify-start p-4 md:p-8"
-      >
+      <div class="container mx-auto h-full flex items-center p-4 md:p-8">
         <div class="text-white max-w-2xl text-center md:text-left">
           <h1
-            class="text-4xl md:text-6xl lg:text-7xl font-extrabold mb-6 leading-tight"
+            class="text-4xl md:text-5xl lg:text-6xl font-extrabold mb-4 leading-tight font-display"
           >
-            Perfect Cleanliness for Your Wardrobe
+            Laundry that’s not just clean—cared for
           </h1>
-          <p class="text-lg md:text-xl lg:text-2xl mb-8 leading-relaxed">
-            Professional cleaning for freshness and longevity of your clothes
+          <p class="text-lg md:text-xl mb-6 leading-relaxed">
+            Premium wash, crisp press, and reliable pickup & delivery in Awka.
           </p>
-          <button
-            class="bg-golden-brown text-white py-4 px-8 text-lg font-semibold rounded-lg hover:bg-opacity-90 transition-all duration-300 transform hover:scale-105 shadow-lg cursor-pointer"
+
+          <p class="text-sm md:text-base text-gray-300 mb-6">
+            48-hour standard turnaround. Express attracts a small surcharge.
+            Bulky items are priced separately.
+          </p>
+
+          <div
+            class="flex flex-col md:flex-row justify-center items-center md:justify-start md:items-start space-y-4 md:space-y-0 md:space-x-4"
           >
-            Book pickup
-          </button>
+            <a
+              href="#"
+              class="inline-block w-1/2 md:w-auto bg-golden-brown text-white py-4 px-8 text-lg font-semibold rounded-lg hover:bg-opacity-90 transition-all duration-300 transform hover:scale-105 shadow-lg"
+            >
+              Book pickup
+            </a>
+          </div>
         </div>
       </div>
     </div>
@@ -143,7 +152,8 @@ const backgroundImages = [image1, image2, image3, image4, image5, image6];
 }
 
 /* Ensure button is clickable but doesn't interfere with header */
-.hero-text-overlay button {
+.hero-text-overlay button,
+.hero-text-overlay a {
   position: relative;
   z-index: 15; /* Lower than header's z-50 */
 }

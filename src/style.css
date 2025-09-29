@@ -18,3 +18,8 @@
   background-color: #996515; 
   color: #f6f4f1; 
 }
+
+::marker{
+  background-color: #996515;
+  color: #996515;
+}
