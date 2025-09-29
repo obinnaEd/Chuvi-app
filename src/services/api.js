@@ -1,8 +1,8 @@
 // api.js
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
-// FIXED: Changed 'api/user/me' to 'api/users/me' to match server configuration (plural 'users').
-const USER_BASE_PATH = 'api/users/me'; 
+// Fixed USER_BASE_PATH to 'api/users/me'
+const USER_BASE_PATH = 'api/users/me';
 
 
 /**
@@ -49,7 +49,7 @@ async function authorizedFetch(endpoint, options = {}) {
         return response.json();
     }
     // Return null or empty object for successful responses without content (e.g., 204 No Content)
-    return null; 
+    return null;
 }
 
 // ====================================================================
@@ -102,16 +102,38 @@ export async function resetPassword(resetData) {
 // ====================================================================
 
 // PROFILE
+
+/**
+ * Fetches the currently authenticated user's profile data.
+ */
 export async function fetchUserProfile() {
     return authorizedFetch(`${USER_BASE_PATH}`, { method: 'GET' });
 }
 
+/**
+ * Updates the user's profile details (fullName, email, phone).
+ * Corresponds to: PUT /api/users/me
+ * @param {object} updateData - { fullName, email, phone }
+ */
 export async function updateProfile(updateData) {
     return authorizedFetch(`${USER_BASE_PATH}`, {
-        method: 'PATCH',
+        method: 'PUT',
         body: JSON.stringify(updateData)
     });
 }
+
+/**
+ * Updates the user's password.
+ * Corresponds to: PUT /api/users/me/password
+ * @param {object} passwordData - { currentPassword, newPassword }
+ */
+export async function updatePassword(passwordData) {
+    return authorizedFetch(`${USER_BASE_PATH}/password`, {
+        method: 'PUT',
+        body: JSON.stringify(passwordData)
+    });
+}
+
 
 // ADDRESSES
 export async function fetchAddresses() {
@@ -147,6 +169,11 @@ export async function updatePreferences(preferencesData) {
 }
 
 // MEMBERSHIP
+
+/**
+ * Initiates or renews a user's membership.
+ * Corresponds to: PUT api/users/membership/join
+ */
 export async function joinMembership(subscriptionDetails) {
     return authorizedFetch(`api/users/membership/join`, {
         method: 'PUT',
@@ -154,12 +181,32 @@ export async function joinMembership(subscriptionDetails) {
     });
 }
 
+/**
+ * Cancels or terminates a user's membership.
+ * Corresponds to: POST api/users/membership/leave
+ */
 export async function leaveMembership() {
     return authorizedFetch(`api/users/membership/leave`, {
         method: 'POST'
     });
 }
 
+export async function createOrder(orderData) {
+  return authorizedFetch('api/orders', {
+    method: 'POST',
+    body: JSON.stringify(orderData)
+  });
+}
+
+/**
+ * Get all orders by user phone
+ * GET /api/orders/:phone
+ */
+export async function getUserOrders(phone) {
+  return authorizedFetch(`api/orders/${phone}`, {
+    method: 'GET'
+  });
+}
 
 // ====================================================================
 // ADMIN ENDPOINTS (Included for completeness)

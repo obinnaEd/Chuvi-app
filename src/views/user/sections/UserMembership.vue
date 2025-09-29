@@ -1,48 +1,139 @@
 <template>
-  <div class="p-6 md:p-10">
-    <h2 class="text-3xl font-bold mb-4">Membership</h2>
-    <div v-if="loading">Loading...</div>
-    <div v-else-if="error" class="text-red-600">{{ error }}</div>
+  <div
+    class="p-6 md:p-8 max-w-sm mx-auto bg-cream shadow-2xl rounded-xl border-t-8 border-navy-blue font-display text-charcoal"
+  >
+    <div class="flex items-center justify-between mb-4">
+      <h2 class="text-xl font-bold text-navy-blue">Membership Status</h2>
 
-    <div v-else>
-      <p>Status: <strong>{{ user.isMember ? 'Active Member' : 'Not a Member' }}</strong></p>
-      <p v-if="user.membershipStartedAt">
-        Started: {{ new Date(user.membershipStartedAt).toLocaleDateString() }}
-      </p>
-      <button v-if="!user.isMember" @click="join" class="btn-primary mt-4">Join Membership</button>
-      <button v-if="user.isMember" @click="leave" class="btn-secondary mt-4">Leave Membership</button>
+      <span
+        v-if="membershipData.user.isMember"
+        class="inline-flex items-center rounded-full bg-pure-gold px-3 py-1 text-sm font-semibold text-charcoal shadow-md"
+      >
+        <svg class="h-2 w-2 fill-current mr-1" viewBox="0 0 8 8">
+          <circle cx="4" cy="4" r="4" />
+        </svg>
+        Active
+      </span>
+      <span
+        v-else
+        class="inline-flex items-center rounded-full bg-golden-brown/20 px-3 py-1 text-sm font-semibold text-charcoal/70"
+      >
+        Inactive
+      </span>
+    </div>
+
+    <div class="space-y-4">
+      <div
+        v-if="membershipData.user.isMember"
+        class="py-2 border-t border-charcoal/10"
+      >
+        <p class="text-sm text-charcoal/80 mb-1">Membership Started:</p>
+        <p class="text-lg font-medium text-charcoal">
+          {{ formattedStartDate }}
+        </p>
+      </div>
+
+      <div class="pt-4">
+        <button
+          @click="handleMembershipAction"
+          :disabled="saving"
+          class="w-full px-4 py-2 text-sm font-semibold rounded-lg transition-colors disabled:opacity-50"
+          :class="
+            membershipData.user.isMember
+              ? 'bg-golden-brown text-cream hover:bg-navy-blue'
+              : 'bg-navy-blue text-cream hover:bg-golden-brown'
+          "
+        >
+          {{
+            membershipData.user.isMember
+              ? saving
+                ? "Cancelling..."
+                : "Cancel Membership"
+              : saving
+              ? "Activating..."
+              : "Activate Now"
+          }}
+        </button>
+      </div>
     </div>
   </div>
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue';
-import { fetchUserProfile, joinMembership, leaveMembership } from '@/services/api.js';
+import { ref, computed } from "vue";
+// Import Toast composable
+import { useToast } from "@/composables/useToast";
 
-const loading = ref(true);
-const error = ref(null);
-const user = ref({});
+const toast = useToast();
 
-const load = async () => {
-  loading.value = true;
+// Mock data structure provided by the user
+const mockInitialData = {
+  message: "Membership activated",
+  user: {
+    isMember: true,
+    membershipStartedAt: "2025-09-29T14:48:18.989Z",
+  },
+};
+
+const membershipData = ref(mockInitialData);
+const saving = ref(false);
+
+// Function to format the start date
+const formattedStartDate = computed(() => {
+  if (!membershipData.value.user.membershipStartedAt) return "N/A";
+
+  const date = new Date(membershipData.value.user.membershipStartedAt);
+  // Example format: September 29, 2025 at 2:48 PM
+  return date.toLocaleString("en-US", {
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+    hour: "numeric",
+    minute: "2-digit",
+    hour12: true,
+  });
+});
+
+// Mock function to simulate API calls and update state
+const handleMembershipAction = async () => {
+  saving.value = true;
+
+  // Simulate an API delay
+  await new Promise((resolve) => setTimeout(resolve, 1500));
+
   try {
-    user.value = await fetchUserProfile();
-  } catch (err) {
-    error.value = err.message;
+    const isCurrentlyMember = membershipData.value.user.isMember;
+
+    if (isCurrentlyMember) {
+      // Simulate successful cancellation
+      membershipData.value.user.isMember = false;
+      membershipData.value.user.membershipStartedAt = null;
+      toast.showSuccess(
+        "Membership successfully cancelled. We hope to see you back soon!"
+      );
+    } else {
+      // Simulate successful activation
+      const now = new Date().toISOString();
+      membershipData.value.user.isMember = true;
+      membershipData.value.user.membershipStartedAt = now;
+
+      // Update the message in the toast to use the actual start time
+      const activatedDate = new Date(now).toLocaleString("en-US", {
+        month: "long",
+        day: "numeric",
+        year: "numeric",
+      });
+      toast.showSuccess(
+        `Membership activated! Enjoy full access starting ${activatedDate}.`
+      );
+    }
+  } catch (error) {
+    // Use toast for error
+    const errorMessage =
+      error.message || "Action failed due to an unexpected error.";
+    toast.showError(errorMessage);
   } finally {
-    loading.value = false;
+    saving.value = false;
   }
 };
-
-const join = async () => {
-  await joinMembership();
-  await load();
-};
-
-const leave = async () => {
-  await leaveMembership();
-  await load();
-};
-
-onMounted(load);
 </script>

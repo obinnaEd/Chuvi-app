@@ -84,7 +84,7 @@ const navItems = [
   { name: 'My Profile', routeName: 'UserProfile', icon: 'user' },
   { name: 'Addresses', routeName: 'UserAddressManager', icon: 'map-marked-alt' },
   { name: 'Preferences', routeName: 'UserPreferences', icon: 'cogs' },
-  { name: 'Membership', routeName: 'UserMembership', icon: 'crown' },
+  // { name: 'Membership', routeName: 'UserMembership', icon: 'crown' },
   { name: 'Credits & Wallet', routeName: 'UserCredits', icon: 'wallet' },
 ];
 
