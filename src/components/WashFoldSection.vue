@@ -51,8 +51,8 @@
           class="w-full max-w-lg lg:w-[600px] h-full lg:h-[400px] rounded-xl overflow-hidden"
         >
           <img
-            src="@/assets/images/laundryImages/chuvi-jacket.jpg"
-            alt="chuvi jacket mock-up"
+            src="@/assets/images/laundryImages/Chuvi-jacket.jpg"
+            alt="Chuvi jacket mock-up"
             class="w-full h-auto object-cover"
           />
         </div>
