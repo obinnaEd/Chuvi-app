@@ -85,7 +85,7 @@ const navItems = [
   { name: 'Addresses', routeName: 'UserAddressManager', icon: 'map-marked-alt' },
   { name: 'Preferences', routeName: 'UserPreferences', icon: 'cogs' },
   // { name: 'Membership', routeName: 'UserMembership', icon: 'crown' },
-  { name: 'Credits & Wallet', routeName: 'UserCredits', icon: 'wallet' },
+  { name: 'userReferral', routeName: 'UserReferral', icon: 'user' },
 ];
 
 // emit event to close sidebar

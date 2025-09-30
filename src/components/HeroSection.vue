@@ -46,12 +46,14 @@
           <div
             class="flex flex-col md:flex-row justify-center items-center md:justify-start md:items-start space-y-4 md:space-y-0 md:space-x-4"
           >
-            <a
-              href="#"
-              class="inline-block w-1/2 md:w-auto bg-golden-brown text-white py-4 px-8 text-lg font-semibold rounded-lg hover:bg-opacity-90 transition-all duration-300 transform hover:scale-105 shadow-lg"
-            >
-              Book pickup
-            </a>
+
+
+          <router-link to="/register"
+          class="inline-block w-1/2 md:w-auto bg-golden-brown text-white py-4 px-8 text-lg font-semibold rounded-lg hover:bg-opacity-90 transition-all duration-300 transform hover:scale-105 shadow-lg"
+          >
+               Book pickup
+          </router-link>
+            
           </div>
         </div>
       </div>

@@ -1,6 +1,6 @@
 <template>
   <a
-    href="/book-pickup"
+    href="/register"
     :class="computedClasses"
     class="font-semibold transition-all duration-300 text-center"
   >

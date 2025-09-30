@@ -56,11 +56,14 @@
         </div>
       </div>
 
-      <button
+        <router-link to="/register">
+           <button
         class="mt-12 bg-golden-brown text-white py-3 px-8 text-lg font-semibold rounded-full hover:bg-opacity-90 transition-all duration-300 transform hover:scale-105 shadow-lg cursor-pointer"
       >
        Book a pickup
       </button>
+        </router-link>
+     
     </div>
   </section>
 </template>

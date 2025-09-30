@@ -1,14 +1,8 @@
 <template>
-  <div class="flex items-center justify-center min-h-screen  p-4">
-    
-    <div
-      class="w-full max-w-lg  p-8 rounded-2xl "
-    >
-
-    <div class="text-center mb-8">
-        <div
-          class="inline-block bg-navy-blue rounded-full p-3 "
-        >
+  <div class="flex items-center justify-center min-h-screen p-4">
+    <div class="w-full max-w-lg p-8 rounded-2xl">
+      <div class="text-center mb-8">
+        <div class="inline-block bg-navy-blue rounded-full p-3">
           <img
             src="@/assets/images/logo/chuvi-logo-icon.png"
             alt="Chuvi Brand Logo"
@@ -26,7 +20,6 @@
         Sign up to access your dashboard.
       </p>
 
-      
       <form @submit.prevent="handleRegistration" class="space-y-5">
         <FormField
           label="Full Name"
@@ -78,7 +71,10 @@
 
       <div class="mt-6 text-center text-charcoal">
         Already have an account?
-        <router-link to="/login" class="text-golden-brown hover:underline font-medium">
+        <router-link
+          to="/login"
+          class="text-golden-brown hover:underline font-medium"
+        >
           Log In
         </router-link>
       </div>
@@ -86,16 +82,17 @@
   </div>
 </template>
 
+<
 <script setup>
-// (The script block remains unchanged)
-import { ref } from "vue";
-import { useRouter } from "vue-router";
+import { ref, onMounted } from "vue";
+import { useRouter, useRoute } from "vue-router";
 import FormField from "@/components/atoms/FormField.vue";
 import { register } from "@/services/api.js";
 import { useToast } from "@/composables/useToast";
 
 const { showSuccess, showError } = useToast();
-const router = useRouter(); 
+const router = useRouter();
+const route = useRoute(); //
 
 // --- STATE ---
 const initialUserData = {
@@ -108,10 +105,18 @@ const initialUserData = {
 const userData = ref({ ...initialUserData });
 const loading = ref(false);
 
+// --- PREFILL referral code if exists ---
+onMounted(() => {
+  const referralCode = route.query.code;
+  if (referralCode) {
+    userData.value.referredBy = referralCode;
+  }
+});
+
 // --- HANDLER ---
 const handleRegistration = async () => {
   loading.value = true;
-  
+
   const payload = { ...userData.value };
   if (!payload.referredBy) {
     delete payload.referredBy;
@@ -120,19 +125,15 @@ const handleRegistration = async () => {
   try {
     const response = await register(payload);
 
-    if (response && response.success) {
-      showSuccess(
-        `Registration successful for **${payload.fullName}**! Please verify your phone number.`
-      );
-      
-      router.push({ 
-          name: 'VerifyPhone', 
-          query: { phone: payload.phone } 
-      });
-      
-    } else {
-      showError(response.message || "Registration failed due to server error.");
-    }
+    // ✅ Successful registration → push to verifyPhone
+    showSuccess(
+      `Registration successful for **${payload.fullName}**! Please verify your phone number.`
+    );
+
+    router.push({
+      name: "VerifyPhone",
+      query: { phone: payload.phone },
+    });
   } catch (err) {
     console.error("Registration error:", err);
     let apiError = "An unknown error occurred during registration.";

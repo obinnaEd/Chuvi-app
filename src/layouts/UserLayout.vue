@@ -13,7 +13,7 @@
       <div 
         class="hidden md:flex flex-shrink-0 w-64 bg-white border-r fixed top-[var(--header-height,0px)] bottom-0 z-30"
       >
-        <UserSidear @closeSidebar="isSidebarOpen = false" />
+        <UserSidebar @closeSidebar="isSidebarOpen = false" />
       </div>
 
       <!-- Mobile Sidebar (overlay) -->

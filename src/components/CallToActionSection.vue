@@ -10,12 +10,15 @@
       <h2 class="text-3xl md:text-4xl lg:text-6xl font-black text-golden-brown leading-tight mb-12">
         your first-time order
       </h2>
-      <button
+      <router-link to="/register">
+         <button
         class="bg-golden-brown offer-button py-4 px-6 rounded-full font-bold text-cream text-lg shadow-lg transition-all duration-300 ease-in-out cursor-pointer hover:scale-105"
       >
         Ready to try us? Book a Pickup
 
       </button>
+      </router-link>
+     
     </div>
   </section>
 </template>

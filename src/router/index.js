@@ -33,7 +33,7 @@ import UserProfile from '@/views/user/sections/UserProfile.vue';
 import UserAddressManager from '@/views/user/sections/UserAddressManager.vue';
 import UserPreferences from '@/views/user/sections/UserPreferences.vue';
 import UserMembership from '@/views/user/sections/UserMembership.vue';
-import UserCredits from '@/views/user/sections/UserCredits.vue';
+import UserReferral from '@/views/user/sections/UserReferral.vue';
 
 
 const routes = [
@@ -91,9 +91,9 @@ const routes = [
         component: UserMembership
       },
       {
-        path: 'credits',
-        name: 'UserCredits',
-        component: UserCredits
+        path: 'referral',
+        name: 'UserReferral',
+        component: UserReferral
       }
     ]
   },

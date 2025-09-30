@@ -1,129 +1,164 @@
 <template>
-  <div class="flex items-center justify-center min-h-screen bg-cream p-4">
-    <div
-      class="w-full max-w-lg bg-bone-white p-8 rounded-2xl shadow-xl border border-gray-200"
-    >
-      <h2
-        class="text-3xl font-bold text-navy-blue text-center mb-2"
-        :style="{ fontFamily: '--font-display' }"
-      >
-        Reset Password
-      </h2>
-      <p class="text-center text-charcoal mb-4">
-        Enter your details to set a new password.
-      </p>
-
+  <div class="flex items-center justify-center min-h-screen p-4">
+    <div class="w-full max-w-md p-8 rounded-2xl shadow-lg bg-white">
+      <!-- Logo -->
       <div class="text-center mb-8">
-        <div class="inline-block bg-navy-blue rounded-full p-3 shadow-lg">
+        <div class="inline-block bg-navy-blue rounded-full p-3">
           <img
             src="@/assets/images/logo/chuvi-logo-icon.png"
             alt="Chuvi Brand Logo"
-            class="h-10 w-auto"
+            class="h-12 w-12"
           />
         </div>
       </div>
 
-      <form @submit.prevent="handleResetPassword" class="space-y-5">
-        <FormField
-          label="Phone Number"
-          type="tel"
-          v-model="resetData.phone"
-          placeholder="e.g., 090XXXXXXXX"
-          required
-        />
+      <h2
+        class="text-2xl font-bold text-golden-brown text-center mb-2"
+        :style="{ fontFamily: '--font-display' }"
+      >
+        Verify Your Phone
+      </h2>
+      <p class="text-center text-charcoal mb-6">
+        Enter the 6-digit code sent to your phone.
+      </p>
 
-        <FormField
-          label="Verification Code"
+      <!-- Phone (readonly) -->
+      <FormField
+        label="Phone Number"
+        type="tel"
+        v-model="phone"
+        :disabled="true"
+      />
+
+      <!-- OTP Input -->
+      <div class="flex justify-center space-x-3 my-6">
+        <input
+          v-for="(digit, index) in otpDigits"
+          :key="index"
           type="text"
-          v-model="resetData.code"
-          placeholder="The 6-digit code sent to you"
-          required
+          maxlength="1"
+          class="w-12 h-12 text-center border rounded-lg text-lg font-bold focus:outline-none focus:ring-2 focus:ring-golden-brown"
+          v-model="otpDigits[index]"
+          @input="onInput($event, index)"
+          @keydown.backspace="onBackspace($event, index)"
         />
+      </div>
 
-        <FormField
-          label="New Password"
-          type="password"
-          v-model="resetData.newPassword"
-          placeholder="Enter a new strong password"
-          required
-        />
+      <!-- Verify Button -->
+      <button
+        @click="handleVerify"
+        :disabled="loading"
+        class="w-full bg-navy-blue text-bone-white py-3 rounded-md font-semibold text-lg hover:bg-charcoal transition-colors disabled:opacity-50 disabled:cursor-not-allowed shadow-md"
+      >
+        {{ loading ? "Verifying..." : "Verify Phone" }}
+      </button>
 
+      <!-- Resend Code -->
+      <div class="mt-6 text-center">
         <button
-          type="submit"
-          :disabled="loading"
-          class="w-full bg-navy-blue text-bone-white py-3 mt-4 rounded-md font-semibold text-lg hover:bg-charcoal transition-colors disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer shadow-lg"
+          @click="handleResend"
+          :disabled="resending || cooldown > 0"
+          class="text-golden-brown font-medium hover:underline disabled:opacity-50 disabled:cursor-not-allowed"
         >
-          {{ loading ? "Updating..." : "Reset Password" }}
+          <span v-if="cooldown > 0"> Resend in {{ cooldown }}s </span>
+          <span v-else>
+            {{ resending ? "Resending..." : "Resend Code" }}
+          </span>
         </button>
-      </form>
-
-      <div class="mt-6 text-center text-charcoal">
-        <router-link
-          to="#"
-          class="text-golden-brown hover:underline font-medium"
-        >
-          Back to Login
-        </router-link>
       </div>
     </div>
   </div>
 </template>
 
 <script setup>
-import { ref } from "vue";
-import { useRouter } from "vue-router";
+import { ref, onMounted, onBeforeUnmount } from "vue";
+import { useRoute, useRouter } from "vue-router";
 import FormField from "@/components/atoms/FormField.vue";
-import { resetPassword } from "@/services/api.js";
+import { verifyPhone, resendCode } from "@/services/api.js";
 import { useToast } from "@/composables/useToast";
 
 const { showSuccess, showError } = useToast();
+const route = useRoute();
 const router = useRouter();
 
-// --- STATE ---
-const initialResetData = {
-  phone: "",
-  code: "",
-  newPassword: "",
-};
-const resetData = ref({ ...initialResetData });
+// State
+const phone = ref("");
+const otpDigits = ref(Array(6).fill("")); // 6-digit OTP
 const loading = ref(false);
+const resending = ref(false);
+const cooldown = ref(0);
+let cooldownTimer = null;
 
-// --- HANDLER ---
-const handleResetPassword = async () => {
+// Prefill phone from query
+onMounted(() => {
+  phone.value = route.query.phone || "";
+});
+
+onBeforeUnmount(() => {
+  if (cooldownTimer) clearInterval(cooldownTimer);
+});
+
+// Handle input
+const onInput = (e, index) => {
+  const value = e.target.value.replace(/[^0-9]/g, ""); // only digits
+  otpDigits.value[index] = value;
+
+  // auto-focus next
+  if (value && index < otpDigits.value.length - 1) {
+    e.target.nextElementSibling?.focus();
+  }
+};
+
+// Handle backspace
+const onBackspace = (e, index) => {
+  if (!otpDigits.value[index] && index > 0) {
+    e.target.previousElementSibling?.focus();
+  }
+};
+
+// Verify
+const handleVerify = async () => {
+  const code = otpDigits.value.join("");
+  if (code.length !== 6) {
+    showError("Please enter all 6 digits.");
+    return;
+  }
+
   loading.value = true;
-
   try {
-    // API Call to reset password
-    const response = await resetPassword({
-        phone: resetData.value.phone,
-        code: resetData.value.code,
-        password: resetData.value.newPassword, // API expects 'password'
-    });
-
-    if (response && response.success) {
-      showSuccess(`Password successfully reset! Please log in with your new password.`);
-
-      // Navigate back to the login page after success
-      // router.push({ name: 'Login' }); // Assuming 'Login' is your route name
-      
-      // For demonstration, reset the form
-      resetData.value = { ...initialResetData };
-
-    } else {
-      showError(response.message || "Password reset failed. Check your code and phone number.");
-    }
+    await verifyPhone({ phone: phone.value, code });
+    showSuccess("Phone verified successfully!");
+    router.push({ name: "BookPickup" });
   } catch (err) {
-    console.error("Reset password error:", err);
-    let apiError = "An unknown error occurred.";
-    try {
-      const parsed = JSON.parse(err.message);
-      apiError = parsed.message || parsed.error || err.message;
-    } catch (e) {
-      apiError = err.message || apiError;
-    }
-    showError(`Operation Failed: ${apiError}`);
+    console.error("Verification error:", err);
+    showError(err.message || "Verification failed. Please try again.");
   } finally {
     loading.value = false;
+  }
+};
+
+// Resend
+const handleResend = async () => {
+  resending.value = true;
+  try {
+    await resendCode({ phone: phone.value });
+    showSuccess("Verification code resent successfully!");
+    otpDigits.value = Array(6).fill(""); // clear inputs
+
+    // start cooldown timer
+    cooldown.value = 60;
+    cooldownTimer = setInterval(() => {
+      if (cooldown.value > 0) {
+        cooldown.value--;
+      } else {
+        clearInterval(cooldownTimer);
+      }
+    }, 1000);
+  } catch (err) {
+    console.error("Resend error:", err);
+    showError(err.message || "Could not resend code. Try again.");
+  } finally {
+    resending.value = false;
   }
 };
 </script>

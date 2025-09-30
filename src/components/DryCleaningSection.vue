@@ -66,8 +66,13 @@
       <template #text>
         Leave your dry cleaning to the experts and save 3+ hours per week.
       </template>
-      <template #button>
-        <base-button padding="py-4 px-8">Book pickup</base-button>
+      <template >
+        <router-link to="/register">
+          <base-button border-radius="rounded-md" hover-color="pure-gold">
+            Get Started
+          </base-button>
+          
+        </router-link>
       </template>
     </AdCard>
   </section>

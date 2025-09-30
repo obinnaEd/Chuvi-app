@@ -4,7 +4,6 @@ const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 // Fixed USER_BASE_PATH to 'api/users/me'
 const USER_BASE_PATH = 'api/users/me';
 
-
 /**
  * Fetches the correct authentication token based on the endpoint being accessed.
  * @param {string} endpoint - The API endpoint being called.
@@ -18,10 +17,8 @@ function getAuthToken(endpoint) {
     return localStorage.getItem('userToken');
 }
 
-
 async function authorizedFetch(endpoint, options = {}) {
     const url = `${API_BASE_URL}${endpoint}`;
-
     const token = getAuthToken(endpoint);
 
     const defaultHeaders = {
@@ -45,18 +42,17 @@ async function authorizedFetch(endpoint, options = {}) {
 
     const contentType = response.headers.get("content-type");
     if (contentType && contentType.includes("application/json")) {
-        // Return JSON response if content type indicates it
         return response.json();
     }
-    // Return null or empty object for successful responses without content (e.g., 204 No Content)
+
+    // Return null for successful responses without content (e.g., 204 No Content)
     return null;
 }
 
 // ====================================================================
-// USER AUTH & PROFILE ENDPOINTS
+// USER AUTH ENDPOINTS
 // ====================================================================
 
-// 1. User Registration
 export async function register(userData) {
     return authorizedFetch('api/auth/register', {
         method: 'POST',
@@ -64,7 +60,6 @@ export async function register(userData) {
     });
 }
 
-// 2. User Login
 export async function login(credentials) {
     return authorizedFetch('api/auth/login', {
         method: 'POST',
@@ -72,8 +67,6 @@ export async function login(credentials) {
     });
 }
 
-
-// 5. Verify Phone Number
 export async function verifyPhone(verificationData) {
     return authorizedFetch('api/auth/verify-phone', {
         method: 'POST',
@@ -81,7 +74,6 @@ export async function verifyPhone(verificationData) {
     });
 }
 
-// 6. Resend Verification Code
 export async function resendCode(phoneData) {
     return authorizedFetch('api/auth/resend-code', {
         method: 'POST',
@@ -89,7 +81,6 @@ export async function resendCode(phoneData) {
     });
 }
 
-// 7. Reset Password
 export async function resetPassword(resetData) {
     return authorizedFetch('api/auth/reset-password', {
         method: 'POST',
@@ -102,19 +93,10 @@ export async function resetPassword(resetData) {
 // ====================================================================
 
 // PROFILE
-
-/**
- * Fetches the currently authenticated user's profile data.
- */
 export async function fetchUserProfile() {
     return authorizedFetch(`${USER_BASE_PATH}`, { method: 'GET' });
 }
 
-/**
- * Updates the user's profile details (fullName, email, phone).
- * Corresponds to: PUT /api/users/me
- * @param {object} updateData - { fullName, email, phone }
- */
 export async function updateProfile(updateData) {
     return authorizedFetch(`${USER_BASE_PATH}`, {
         method: 'PUT',
@@ -122,18 +104,12 @@ export async function updateProfile(updateData) {
     });
 }
 
-/**
- * Updates the user's password.
- * Corresponds to: PUT /api/users/me/password
- * @param {object} passwordData - { currentPassword, newPassword }
- */
 export async function updatePassword(passwordData) {
     return authorizedFetch(`${USER_BASE_PATH}/password`, {
         method: 'PUT',
         body: JSON.stringify(passwordData)
     });
 }
-
 
 // ADDRESSES
 export async function fetchAddresses() {
@@ -169,11 +145,6 @@ export async function updatePreferences(preferencesData) {
 }
 
 // MEMBERSHIP
-
-/**
- * Initiates or renews a user's membership.
- * Corresponds to: PUT api/users/membership/join
- */
 export async function joinMembership(subscriptionDetails) {
     return authorizedFetch(`api/users/membership/join`, {
         method: 'PUT',
@@ -181,35 +152,35 @@ export async function joinMembership(subscriptionDetails) {
     });
 }
 
-/**
- * Cancels or terminates a user's membership.
- * Corresponds to: POST api/users/membership/leave
- */
 export async function leaveMembership() {
     return authorizedFetch(`api/users/membership/leave`, {
         method: 'POST'
     });
 }
 
+// ORDERS
 export async function createOrder(orderData) {
-  return authorizedFetch('api/orders', {
-    method: 'POST',
-    body: JSON.stringify(orderData)
-  });
+    return authorizedFetch('api/orders', {
+        method: 'POST',
+        body: JSON.stringify(orderData)
+    });
 }
 
-/**
- * Get all orders by user phone
- * GET /api/orders/:phone
- */
 export async function getUserOrders(phone) {
-  return authorizedFetch(`api/orders/${phone}`, {
-    method: 'GET'
-  });
+    return authorizedFetch(`api/orders/${phone}`, {
+        method: 'GET'
+    });
+}
+
+// REFERRALS
+export async function getReferralInfo() {
+    return authorizedFetch('api/users/refer', {
+        method: 'GET'
+    });
 }
 
 // ====================================================================
-// ADMIN ENDPOINTS (Included for completeness)
+// ADMIN ENDPOINTS
 // ====================================================================
 
 export async function adminLogin(credentials) {
@@ -236,6 +207,7 @@ export async function updateOrderStatus(orderId, newStatusData) {
     return authorizedFetch(`api/admin/orders/${orderId}/status`, { method: 'PUT', body: JSON.stringify(newStatusData) });
 }
 
+// Coupons
 export async function createCoupon(couponData) {
     const mappedData = {
         code: couponData.couponCode,
@@ -276,6 +248,7 @@ export async function updateCouponStatus(couponId, statusData) {
     return authorizedFetch(`api/admin/coupons/${couponId}/status`, { method: 'PUT', body: JSON.stringify(statusData) });
 }
 
+// Subscription Plans
 export async function createSubscriptionPlan(planData) {
     return authorizedFetch('api/admin/create/subcription-plan', { method: 'POST', body: JSON.stringify(planData) });
 }
@@ -284,6 +257,7 @@ export async function getAllSubscriptionPlans() {
     return authorizedFetch('api/admin/create/get-subcription-plan');
 }
 
+// Config
 export async function getConfig() {
     return authorizedFetch('api/admin/get-config');
 }
@@ -300,6 +274,7 @@ export async function deleteConfig(key) {
     return authorizedFetch(`api/admin/config/${key}`, { method: 'DELETE' });
 }
 
+// Services
 export async function getServices() {
     return authorizedFetch('api/admin/get-services');
 }
@@ -320,6 +295,7 @@ export async function deleteService(serviceId) {
     return authorizedFetch(`api/admin/services/${serviceId}`, { method: 'DELETE' });
 }
 
+// Service Pricing
 export async function getServicePricings() {
     return authorizedFetch('api/admin/get-service-pricings');
 }
