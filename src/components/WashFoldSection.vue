@@ -60,7 +60,7 @@
     </div>
   </section>
 
-  <HowItWorksection />
+  <HowItWorksSection />
   <fee-section />
   <delivery-section />
   <pricing-section />
@@ -78,7 +78,7 @@
 
 <script setup>
 import BaseButton from "@/components/atoms/BaseButton.vue";
-import HowItWorksection from "@/components/HowItWorksSection.vue";
+import HowItWorksSection from "@/components/HowItWorksSection.vue";
 import FeeSection from "@/components/FeeSection.vue";
 import DeliverySection from "@/components/DeliverySection.vue";
 import PricingSection from "@/components/PricingSection.vue";
