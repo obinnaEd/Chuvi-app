@@ -74,7 +74,7 @@
 </template>
 
 <script setup>
-import HowItWorksection from "@/components/HowItWorkssection.vue";
+import HowItWorksection from "@/components/HowItWorksSection.vue";
 import PricingSection from "@/components/PricingSection.vue";
 import FeeSection from "@/components/FeeSection.vue";
 import DeliverySection from "@/components/DeliverySection.vue";
