@@ -13,7 +13,7 @@
       <div 
         class="hidden md:flex flex-shrink-0 w-64 bg-white border-r fixed top-[var(--header-height,0px)] bottom-0 z-30"
       >
-        <UserSidebar @closeSidebar="isSidebarOpen = false" />
+        <UserSidear @closeSidebar="isSidebarOpen = false" />
       </div>
 
       <!-- Mobile Sidebar (overlay) -->
@@ -60,7 +60,7 @@ import { useRoute } from 'vue-router';
 
 // ⚠️ Corrected Imports based on our file structure (components/layout/...)
 import UserHeader from '@/components/user/UserHeader.vue';
-import UserSidebar from '@/components/user/UserSidebar.vue';
+import UserSidebar from '@/components/user/UserSideBar.vue';
 import UserFooter from '@/components/user/UserFooter.vue';
 
 // Assuming UseToast is a component that displays toast messages
