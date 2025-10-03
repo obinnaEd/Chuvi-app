@@ -29,9 +29,9 @@ const copyToClipboard = async (text, type) => {
 
 <template>
   <div
-    class="flex flex-col items-center justify-center min-h-screen bg-gray-50 p-6"
+    class="flex flex-col items-center justify-center min-h-screen p-6"
   >
-    <div class="bg-white shadow-xl rounded-2xl p-8 w-full max-w-sm text-center">
+    <div class="bg-bone-white rounded-2xl p-8 w-full max-w-sm text-center">
       <h1 class="text-xl font-semibold mb-6">Invite Friends</h1>
 
       <!-- QR Code -->
@@ -39,16 +39,16 @@ const copyToClipboard = async (text, type) => {
         <QrcodeVue
           :value="referralLink"
           :size="180"
-          class="rounded-xl border border-gray-200 p-2"
+          class="rounded-xl p-2"
         />
       </div>
 
       <!-- Referral Code -->
       <div class="flex items-center justify-center space-x-2 mb-4">
-        <span class="text-lg font-mono font-bold">{{ referralCode }}</span>
+        <span class="text-lg font-mono font-bold text-golden-brown">{{ referralCode }}</span>
         <button
           @click="copyToClipboard(referralCode, 'Code')"
-          class="p-2 rounded-lg hover:bg-gray-100 transition"
+          class="p-2 rounded-lg hover:bg-gray-100 transition cursor-pointer"
           aria-label="Copy referral code"
         >
           <i class="fa-regular fa-copy text-gray-600 text-xl"></i>
@@ -67,7 +67,7 @@ const copyToClipboard = async (text, type) => {
         </a>
         <button
           @click="copyToClipboard(referralLink, 'Link')"
-          class="p-2 rounded-lg hover:bg-gray-100 transition"
+          class="p-2 rounded-lg hover:bg-gray-100 transition cursor-pointer"
           aria-label="Copy referral link"
         >
           <i class="fa-regular fa-copy text-gray-600 text-xl"></i>
@@ -75,7 +75,7 @@ const copyToClipboard = async (text, type) => {
       </div>
 
       <!-- Copy confirmation -->
-      <p v-if="copiedMessage" class="text-green-600 text-sm mt-3">
+      <p v-if="copiedMessage" class="text-gray-600 text-sm mt-3">
         {{ copiedMessage }}
       </p>
     </div>

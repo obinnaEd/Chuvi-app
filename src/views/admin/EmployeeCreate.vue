@@ -1,10 +1,10 @@
 <template>
-  <div class="p-6 bg-cream min-h-[80vh]">
+  <div class="p-6  min-h-[80vh]">
     <h2 class="text-3xl font-bold text-navy-blue mb-6 border-b pb-2">
       Manage Employees
     </h2>
 
-    <div class="max-w-xl mx-auto bg-bone-white p-8 rounded-xl shadow-lg mb-10">
+    <div class="max-w-xl mx-auto bg-bone-white p-8 rounded-xl mb-10">
       <form @submit.prevent="handleCreateEmployee" class="space-y-6">
         <h3 class="text-xl font-semibold text-navy-blue mb-4">
           Create New Employee
@@ -51,7 +51,7 @@
         No employees found.
       </p>
 
-      <div v-else class="bg-bone-white p-6 rounded-xl border border-gray-200">
+      <div v-else class="bg-bone-white p-6 rounded-xl bg-white">
         <div
           class="grid grid-cols-4 gap-4 p-2 text-sm font-bold border-b-2 border-charcoal/50 mb-2 text-navy-blue"
         >

@@ -1,6 +1,6 @@
 <template>
   <div class="p-6 md:p-10  text-charcoal min-h-screen">
-    <div class="bg-bone-white text-navy-blue px-4 py-3 rounded-sm mb-6">
+    <div class="bg-bone-white text-golden-brown px-4 py-3 rounded-sm mb-6">
       <strong>Disclaimer:</strong> Deliveries and services are available <strong>within Anambra</strong> only.
     </div>
 
@@ -50,7 +50,7 @@
     <h3 class="text-2xl font-semibold mt-8 mb-4 text-navy-blue">Add New Address</h3>
     <form
       @submit.prevent="addAddress"
-      class="grid grid-cols-1 md:grid-cols-2 gap-4 bg-bone-white p-4 rounded-sm border border-charcoal/20"
+      class="grid grid-cols-1 md:grid-cols-2 gap-4 bg-white p-4 rounded-sm "
     >
       <div>
         <label class="block text-sm mb-1 text-charcoal">Label</label>

@@ -1,6 +1,6 @@
 <template>
   <header
-    class="flex items-center justify-between px-4 py-3 bg-bone-white border-b border-gray-200 shadow-sm"
+    class="flex items-center justify-between px-4 py-3 bg-white border-b border-gray-200 "
   >
     <div class="flex items-center">
       <button
@@ -31,9 +31,9 @@
           @click="isProfileOpen = !isProfileOpen"
           class="flex items-center space-x-2 text-charcoal focus:outline-none"
         >
-          <span class="text-sm font-medium hidden sm:inline">Admin User</span>
+          <span class="text-sm font-medium hidden sm:inline cursor-pointer">Admin User</span>
           <div
-            class="w-8 h-8 rounded-full bg-golden-brown flex items-center justify-center text-bone-white font-semibold"
+            class="w-8 h-8 rounded-full bg-golden-brown flex items-center justify-center text-bone-white font-semibold cursor-pointer"
           >
             A
           </div>
@@ -41,12 +41,12 @@
 
         <div
           v-if="isProfileOpen"
-          class="absolute right-0 mt-2 w-48 bg-bone-white rounded-md shadow-lg py-1 z-20"
+          class="absolute right-0 mt-2 w-48 bg-bone-white rounded-md bg-white py-1 z-20"
         >
           <a
             href="#"
             @click.prevent="logout"
-            class="block px-4 py-2 text-sm text-charcoal hover:bg-gray-100"
+            class="block px-4 py-2 text-sm text-charcoal cursor-pointer"
             >Logout</a
           >
         </div>

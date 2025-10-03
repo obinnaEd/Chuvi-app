@@ -11,7 +11,7 @@
     <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
       <div class="lg:col-span-1 space-y-8">
         <div
-          class="p-6 bg-bone-white rounded-lg shadow-xl border-t-4 border-golden-brown"
+          class="p-6 bg-bone-white rounded-lg border-t-4 border-golden-brown"
         >
           <h2 class="text-2xl font-bold mb-4 text-navy-blue flex items-center">
             <UserIcon class="w-6 h-6 mr-2" />

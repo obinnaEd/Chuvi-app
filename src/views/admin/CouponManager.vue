@@ -1,5 +1,5 @@
 <template>
-  <div class="p-6 bg-gray-50 min-h-[80vh]">
+  <div class="p-6 min-h-[80vh]">
     <h2 class="text-3xl font-bold text-navy-blue mb-6 border-b pb-2">
       Coupon Manager
     </h2>

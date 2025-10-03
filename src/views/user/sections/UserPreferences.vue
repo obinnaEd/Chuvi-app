@@ -11,7 +11,7 @@
 
     <form
       @submit.prevent="savePreferences"
-      class="space-y-6 bg-bone-white shadow-lg rounded-lg p-6"
+      class="space-y-6 bg-bone-white rounded-lg p-6"
     >
       <div>
         <label class="block text-sm font-medium mb-1 text-navy-blue"
